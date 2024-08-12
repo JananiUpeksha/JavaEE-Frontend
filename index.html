@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #343a40;
+        }
+        .form-group label {
+            color: #495057;
+        }
+        .btn-primary {
+            background-color: blue;
+            border-color: blue;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4">Student Form</h2>
+    <form>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Enter your email">
+        </div>
+        <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" class="form-control" id="city" placeholder="Enter your city">
+        </div>
+        <div class="form-group">
+            <label for="level">Level</label>
+            <input type="text" class="form-control" id="level" placeholder="Enter your level">
+        </div>
+        <button id="submit" type="submit" class="btn btn-primary">Save</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+
+    $("#submit").click(function (){
+        event.preventDefault()
+
+        // Get form data
+        const nameF = $("#name").val();
+        const emailF = $("#email").val();
+        const cityF = $("#city").val();
+        const levelF = $("#level").val();
+
+        // Log the form data to the console
+        console.log('Name:', nameF);
+        console.log('Email:', emailF);
+        console.log('City:', cityF);
+        console.log('Level:', levelF);
+
+        //create an object
+        const  studentData={
+            name:nameF,
+            city:cityF,
+            email:emailF,
+            level:levelF
+        };
+        console.log(studentData);
+
+        //01.create json
+        const  studentJson = JSON.stringify(studentData)
+        console.log(studentJson);
+
+        //02.save the data with AJAx
+        const  http = new XMLHttpRequest();
+        http.onreadystatechange=()=> {
+            //check state
+            if (http.readyState = 4) {
+                if (http.status == 200) {
+                    var jsonTypeResponse = JSON.stringify(http.responseText);//ewna res eka json type eken print krgnna
+                    console.log(jsonTypeResponse);
+
+                } else {
+                    console.log("failed");
+                    console.log(http.status)
+                    console.log("readyState")
+                }
+
+            } else {
+                console.log("processing stage :" ,http.readyState);
+            }
+        }
+
+        //03.open the req
+        http.open("post","http://localhost:8080/StudentMng/studentData",true);
+        http.setRequestHeader("content-type","application/json");
+        http.send(studentJson);
+
+    })
+
+</script>
+</body>
+</html>
